@@ -49,8 +49,11 @@
       </div>
       <div class="form-group" style="margin-bottom:24px">
         <label>SENHA</label>
-        <input type="password" id="login-password" placeholder="Digite sua senha"
-          onkeydown="if(event.key==='Enter') doLogin()">
+        <div class="pwd-wrap">
+          <input type="password" id="login-password" placeholder="Digite sua senha"
+            onkeydown="if(event.key==='Enter') doLogin()">
+          <button type="button" class="pwd-toggle" onclick="togglePwd('login-password',this)" tabindex="-1">👁</button>
+        </div>
       </div>
       <button onclick="doLogin()" class="btn-primary btn-block">Entrar</button>
     </div>
@@ -67,16 +70,25 @@
       <div id="chpwd-error" class="error-msg" style="display:none"></div>
       <div class="form-group" style="margin-bottom:14px">
         <label>SENHA ATUAL</label>
-        <input type="password" id="chpwd-old" placeholder="Sua senha atual">
+        <div class="pwd-wrap">
+          <input type="password" id="chpwd-old" placeholder="Sua senha atual">
+          <button type="button" class="pwd-toggle" onclick="togglePwd('chpwd-old',this)" tabindex="-1">👁</button>
+        </div>
       </div>
       <div class="form-group" style="margin-bottom:14px">
         <label>NOVA SENHA (mín. 6 caracteres)</label>
-        <input type="password" id="chpwd-new" placeholder="Nova senha">
+        <div class="pwd-wrap">
+          <input type="password" id="chpwd-new" placeholder="Nova senha">
+          <button type="button" class="pwd-toggle" onclick="togglePwd('chpwd-new',this)" tabindex="-1">👁</button>
+        </div>
       </div>
       <div class="form-group" style="margin-bottom:24px">
         <label>CONFIRMAR NOVA SENHA</label>
-        <input type="password" id="chpwd-confirm" placeholder="Repita a nova senha"
-          onkeydown="if(event.key==='Enter') doChangePassword()">
+        <div class="pwd-wrap">
+          <input type="password" id="chpwd-confirm" placeholder="Repita a nova senha"
+            onkeydown="if(event.key==='Enter') doChangePassword()">
+          <button type="button" class="pwd-toggle" onclick="togglePwd('chpwd-confirm',this)" tabindex="-1">👁</button>
+        </div>
       </div>
       <button onclick="doChangePassword()" class="btn-primary btn-block">Salvar Nova Senha</button>
     </div>
@@ -249,7 +261,7 @@
         <div class="form-row">
           <div class="form-group col-1"><label>USUÁRIO *</label><input type="text" id="new-username" placeholder="login"></div>
           <div class="form-group col-1"><label>NOME COMPLETO</label><input type="text" id="new-name" placeholder="Nome para exibição"></div>
-          <div class="form-group col-1"><label>SENHA INICIAL *</label><input type="password" id="new-password" placeholder="mín. 6 caracteres"></div>
+          <div class="form-group col-1"><label>SENHA INICIAL *</label><div class="pwd-wrap"><input type="password" id="new-password" placeholder="mín. 6 caracteres"><button type="button" class="pwd-toggle" onclick="togglePwd('new-password',this)" tabindex="-1">👁</button></div></div>
           <div class="form-group col-1">
             <label>PERFIL</label>
             <select id="new-role">
@@ -288,7 +300,10 @@
       <div id="reset-error" class="error-msg" style="display:none"></div>
       <div class="form-group" style="margin-bottom:20px">
         <label>NOVA SENHA</label>
-        <input type="password" id="reset-new-password" placeholder="mín. 6 caracteres">
+        <div class="pwd-wrap">
+          <input type="password" id="reset-new-password" placeholder="mín. 6 caracteres">
+          <button type="button" class="pwd-toggle" onclick="togglePwd('reset-new-password',this)" tabindex="-1">👁</button>
+        </div>
       </div>
       <div style="display:flex;gap:10px;justify-content:flex-end">
         <button onclick="closeResetModal()" class="btn-secondary">Cancelar</button>

@@ -17,7 +17,6 @@ module.exports = async function handler(req, res) {
 
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-
     const prompt = `Você é um Especialista em Educação Inclusiva e Atendimento Educacional Especializado (AEE).
 
 Analise o laudo clínico/médico anexo e os dados do aluno. Extraia todas as informações diagnósticas e gere um Plano Educacional Individualizado (PEI) completo e detalhado.
@@ -118,25 +117,20 @@ Retorne SOMENTE um JSON válido, sem markdown, sem texto adicional, exatamente n
   "avaliacao": "descreva como será avaliado e monitorado o progresso do aluno ao longo do bimestre"
 }`;
 
-    const imagePart = {
-      inlineData: {
-        data: laudoBase64,
-        mimeType: laudoMimeType,
-      },
-    };
+    const result = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            { text: prompt },
+            { inlineData: { data: laudoBase64, mimeType: laudoMimeType } },
+          ],
+        },
+      ],
+    });
 
-   const result = await ai.models.generateContent({
-  model: 'gemini-2.5-flash',
-  contents: [{
-    role: 'user',
-    parts: [
-      { text: prompt },
-      { inlineData: { data: laudoBase64, mimeType: laudoMimeType } },
-    ],
-  }],
-});
-const text = result.text;
-
+    const text = result.text;
 
     // Remove markdown se presente
     const clean = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
