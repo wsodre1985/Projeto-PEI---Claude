@@ -15,8 +15,7 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'Laudo não enviado.' });
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 
     const prompt = `Você é um Especialista em Educação Inclusiva e Atendimento Educacional Especializado (AEE).
@@ -126,8 +125,18 @@ Retorne SOMENTE um JSON válido, sem markdown, sem texto adicional, exatamente n
       },
     };
 
-    const result = await model.generateContent([prompt, imagePart]);
-    const text = result.response.text();
+   const result = await ai.models.generateContent({
+  model: 'gemini-2.5-flash',
+  contents: [{
+    role: 'user',
+    parts: [
+      { text: prompt },
+      { inlineData: { data: laudoBase64, mimeType: laudoMimeType } },
+    ],
+  }],
+});
+const text = result.text;
+
 
     // Remove markdown se presente
     const clean = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
