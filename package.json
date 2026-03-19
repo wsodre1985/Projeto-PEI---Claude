@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Plataforma de geração automática de PEI com IA",
   "dependencies": {
-    "@google/genai": "^1.0.0"
+    "@google/genai": "^1.0.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }

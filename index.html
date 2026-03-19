@@ -12,8 +12,8 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="app-header">
+  <!-- ========== HEADER ========== -->
+  <header class="app-header" id="app-header" style="display:none">
     <div class="logo" onclick="goToLanding()" style="cursor:pointer">
       <div class="logo-icon">✦</div>
       <div class="logo-text">
@@ -21,36 +21,85 @@
         <span class="logo-sub">PEI Automator</span>
       </div>
     </div>
-    <div id="result-actions" class="header-actions" style="display:none">
-      <button onclick="rehash()" class="btn-secondary">↺ Regerar</button>
-      <button onclick="printPEI()" class="btn-secondary">⊞ Imprimir</button>
-      <button onclick="downloadWord()" class="btn-secondary">📄 Word</button>
-      <button onclick="downloadPDF()" class="btn-primary">↓ PDF</button>
+    <div class="header-right">
+      <div id="result-actions" style="display:none">
+        <button onclick="rehash()" class="btn-secondary">↺ Regerar</button>
+        <button onclick="printPEI()" class="btn-secondary">⊞ Imprimir</button>
+        <button onclick="downloadWord()" class="btn-secondary">📄 Word</button>
+        <button onclick="downloadPDF()" class="btn-primary">↓ PDF</button>
+      </div>
+      <span id="user-display" style="font-size:13px;color:#666"></span>
+      <button id="btn-admin" onclick="goToAdmin()" class="btn-secondary" style="display:none">👥 Usuários</button>
+      <button onclick="doLogout()" class="btn-secondary">Sair</button>
     </div>
   </header>
 
-  <!-- TELA 1: LANDING -->
-  <div id="screen-landing" class="screen active">
-    <div class="landing-content">
-      <h1>Bem-vindo ao EducaInclusiva</h1>
-      <p>
-        Sua ferramenta inteligente para criar Planos Educacionais
-        Individualizados. Economize tempo e foque no que realmente
-        importa: o desenvolvimento do aluno.
-      </p>
-      <button onclick="goToForm()" class="btn-primary btn-large">
-        Criar Novo PEI &rsaquo;
-      </button>
+  <!-- ========== TELA: LOGIN ========== -->
+  <div id="screen-login" class="fullscreen-bg">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="logo-icon" style="width:52px;height:52px;font-size:22px;margin:0 auto 12px">✦</div>
+        <h1 class="login-title">EducaInclusiva</h1>
+        <p class="login-sub">PEI Automator</p>
+      </div>
+      <div id="login-error" class="error-msg" style="display:none"></div>
+      <div class="form-group" style="margin-bottom:14px">
+        <label>USUÁRIO</label>
+        <input type="text" id="login-username" placeholder="Digite seu usuário" autocomplete="username">
+      </div>
+      <div class="form-group" style="margin-bottom:24px">
+        <label>SENHA</label>
+        <input type="password" id="login-password" placeholder="Digite sua senha"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <button onclick="doLogin()" class="btn-primary btn-block">Entrar</button>
     </div>
-    <footer class="app-footer">
-      <p>© 2026 EducaInclusiva — Tecnologia Assistiva para Educação Especial. &nbsp;|&nbsp; Em conformidade com a LGPD.</p>
-    </footer>
   </div>
 
-  <!-- TELA 2: DADOS DO ALUNO -->
-  <div id="screen-form" class="screen">
-    <div class="form-container">
+  <!-- ========== TELA: PRIMEIRO ACESSO (trocar senha) ========== -->
+  <div id="screen-change-password" class="fullscreen-bg" style="display:none">
+    <div class="login-box">
+      <div class="login-logo">
+        <div class="logo-icon" style="width:52px;height:52px;font-size:22px;margin:0 auto 12px">🔑</div>
+        <h1 class="login-title">Primeiro Acesso</h1>
+        <p class="login-sub">Defina sua nova senha para continuar</p>
+      </div>
+      <div id="chpwd-error" class="error-msg" style="display:none"></div>
+      <div class="form-group" style="margin-bottom:14px">
+        <label>SENHA ATUAL</label>
+        <input type="password" id="chpwd-old" placeholder="Sua senha atual">
+      </div>
+      <div class="form-group" style="margin-bottom:14px">
+        <label>NOVA SENHA (mín. 6 caracteres)</label>
+        <input type="password" id="chpwd-new" placeholder="Nova senha">
+      </div>
+      <div class="form-group" style="margin-bottom:24px">
+        <label>CONFIRMAR NOVA SENHA</label>
+        <input type="password" id="chpwd-confirm" placeholder="Repita a nova senha"
+          onkeydown="if(event.key==='Enter') doChangePassword()">
+      </div>
+      <button onclick="doChangePassword()" class="btn-primary btn-block">Salvar Nova Senha</button>
+    </div>
+  </div>
 
+  <!-- ========== TELA: LANDING ========== -->
+  <div id="screen-landing" style="display:none">
+    <div class="landing-wrap">
+      <div class="landing-content">
+        <h1>Bem-vindo ao EducaInclusiva</h1>
+        <p>Sua ferramenta inteligente para criar Planos Educacionais Individualizados.
+           Economize tempo e foque no que realmente importa: o desenvolvimento do aluno.</p>
+        <button onclick="goToForm()" class="btn-primary btn-large">Criar Novo PEI &rsaquo;</button>
+      </div>
+      <footer class="app-footer">
+        <p>© 2026 EducaInclusiva — Tecnologia Assistiva para Educação Especial. &nbsp;|&nbsp; Em conformidade com a LGPD.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ========== TELA: DADOS DO ALUNO ========== -->
+  <div id="screen-form" style="display:none">
+    <div class="form-container">
       <div class="step-header">
         <div class="step-indicator">
           <span class="step active">1</span>
@@ -60,7 +109,6 @@
         <h2>Dados do Aluno</h2>
         <p>Comece preenchendo as informações básicas do estudante.</p>
       </div>
-
       <div class="card">
         <div class="form-row">
           <div class="form-group full-width">
@@ -68,33 +116,21 @@
             <input type="file" id="school-logo" accept="image/*" class="file-input">
           </div>
         </div>
-
         <div class="form-row">
           <div class="form-group col-2">
             <label>Nome Completo do Aluno *</label>
-            <input type="text" id="nome" placeholder="Ex: João Silva" required>
+            <input type="text" id="nome" placeholder="Ex: João Silva">
           </div>
           <div class="form-group col-1">
             <label>Data de Nascimento</label>
             <input type="date" id="data_nascimento">
           </div>
         </div>
-
         <div class="form-row">
-          <div class="form-group col-1">
-            <label>Idade</label>
-            <input type="text" id="idade" placeholder="Ex: 8">
-          </div>
-          <div class="form-group col-1">
-            <label>Série</label>
-            <input type="text" id="serie" placeholder="Ex: 3º Ano">
-          </div>
-          <div class="form-group col-1">
-            <label>Turma</label>
-            <input type="text" id="turma" placeholder="Ex: A">
-          </div>
+          <div class="form-group col-1"><label>Idade</label><input type="text" id="idade" placeholder="Ex: 8"></div>
+          <div class="form-group col-1"><label>Série</label><input type="text" id="serie" placeholder="Ex: 3º Ano"></div>
+          <div class="form-group col-1"><label>Turma</label><input type="text" id="turma" placeholder="Ex: A"></div>
         </div>
-
         <div class="form-row">
           <div class="form-group col-1">
             <label>Turno</label>
@@ -105,55 +141,29 @@
               <option value="Integral">Integral</option>
             </select>
           </div>
-          <div class="form-group col-1">
-            <label>Bimestre</label>
-            <input type="text" id="bimestre" placeholder="Ex: 1º Bimestre">
-          </div>
-          <div class="form-group col-1">
-            <label>Escola</label>
-            <input type="text" id="escola" placeholder="Nome da instituição">
-          </div>
+          <div class="form-group col-1"><label>Bimestre</label><input type="text" id="bimestre" placeholder="Ex: 1º Bimestre"></div>
+          <div class="form-group col-1"><label>Escola</label><input type="text" id="escola" placeholder="Nome da instituição"></div>
         </div>
-
         <div class="form-row">
-          <div class="form-group col-1">
-            <label>Nome da Mãe</label>
-            <input type="text" id="nome_mae">
-          </div>
-          <div class="form-group col-1">
-            <label>Nome do Pai</label>
-            <input type="text" id="nome_pai">
-          </div>
-          <div class="form-group col-1">
-            <label>Professora Regente</label>
-            <input type="text" id="prof_regente">
-          </div>
+          <div class="form-group col-1"><label>Nome da Mãe</label><input type="text" id="nome_mae"></div>
+          <div class="form-group col-1"><label>Nome do Pai</label><input type="text" id="nome_pai"></div>
+          <div class="form-group col-1"><label>Professora Regente</label><input type="text" id="prof_regente"></div>
         </div>
-
         <div class="form-row">
-          <div class="form-group col-1">
-            <label>Professora de Apoio</label>
-            <input type="text" id="prof_apoio">
-          </div>
-          <div class="form-group col-1">
-            <label>Coordenação</label>
-            <input type="text" id="coordenacao">
-          </div>
+          <div class="form-group col-1"><label>Professora de Apoio</label><input type="text" id="prof_apoio"></div>
+          <div class="form-group col-1"><label>Coordenação</label><input type="text" id="coordenacao"></div>
         </div>
-
         <div class="form-actions">
-          <button type="button" onclick="goToLanding()" class="btn-secondary">Cancelar</button>
-          <button type="button" onclick="goToUpload()" class="btn-primary">Próximo Passo &rsaquo;</button>
+          <button onclick="goToLanding()" class="btn-secondary">Cancelar</button>
+          <button onclick="goToUpload()" class="btn-primary">Próximo Passo &rsaquo;</button>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- TELA 3: UPLOAD DO LAUDO -->
-  <div id="screen-upload" class="screen">
+  <!-- ========== TELA: UPLOAD LAUDO ========== -->
+  <div id="screen-upload" style="display:none">
     <div class="form-container">
-
       <div class="step-header">
         <div class="step-indicator">
           <span class="step done">✓</span>
@@ -163,48 +173,29 @@
         <h2>Laudo Médico</h2>
         <p class="accent-text">Faça o upload do laudo para que nossa IA possa analisar as necessidades específicas.</p>
       </div>
-
       <div class="card">
-        <div
-          class="upload-area"
-          id="upload-area"
-          onclick="document.getElementById('laudo-file').click()"
-        >
+        <div class="upload-area" id="upload-area" onclick="document.getElementById('laudo-file').click()">
           <div class="upload-icon">↑</div>
           <p>Arraste os laudos aqui ou clique para selecionar</p>
           <small>Formatos aceitos: JPG, PNG, PDF</small>
           <div id="file-selected" style="display:none" class="file-preview">
-            <span>📄</span>
-            <span id="file-name"></span>
+            <span>📄</span><span id="file-name"></span>
           </div>
         </div>
-
-        <input
-          type="file"
-          id="laudo-file"
-          accept="image/jpeg,image/png,application/pdf"
-          style="display:none"
-          onchange="onFileSelected(this)"
-        >
-
+        <input type="file" id="laudo-file" accept="image/jpeg,image/png,application/pdf"
+          style="display:none" onchange="onFileSelected(this)">
         <div class="form-actions">
           <button onclick="goToForm()" class="btn-secondary">Voltar</button>
-          <button
-            id="btn-analisar"
-            onclick="analisarPEI()"
-            class="btn-primary btn-ai"
-            disabled
-          >
+          <button id="btn-analisar" onclick="analisarPEI()" class="btn-primary btn-ai" disabled>
             Analisar com IA ✦
           </button>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- TELA 4: CARREGANDO -->
-  <div id="screen-loading" class="screen">
+  <!-- ========== TELA: CARREGANDO ========== -->
+  <div id="screen-loading" style="display:none">
     <div class="loading-content">
       <div class="spinner"></div>
       <h2>Analisando o laudo...</h2>
@@ -212,13 +203,10 @@
     </div>
   </div>
 
-  <!-- TELA 5: RESULTADO -->
-  <div id="screen-result" class="screen">
+  <!-- ========== TELA: RESULTADO ========== -->
+  <div id="screen-result" style="display:none">
     <div class="result-layout">
-
-      <!-- Painel lateral -->
       <div class="result-sidebar">
-
         <div class="sidebar-card">
           <div class="analysis-header">
             <span class="check-icon">✓</span>
@@ -229,27 +217,83 @@
             <div id="cids-list" class="cids"></div>
           </div>
         </div>
-
         <div class="sidebar-card">
           <h3>Metas Sugeridas</h3>
           <div id="metas-list" class="metas-list"></div>
           <button class="btn-add-meta" onclick="addMeta()">+ Adicionar Meta</button>
         </div>
-
         <div class="sidebar-card">
           <button onclick="downloadPDF()" class="btn-download">↓ Baixar PDF</button>
           <button onclick="downloadWord()" class="btn-download-alt">📄 Baixar Word</button>
           <button onclick="printPEI()" class="btn-download-alt">⊞ Imprimir</button>
           <button onclick="rehash()" class="btn-download-alt">↺ Regerar PEI</button>
         </div>
-
       </div>
-
-      <!-- Documento PEI -->
       <div class="result-main">
         <div id="pei-document" class="pei-document"></div>
       </div>
+    </div>
+  </div>
 
+  <!-- ========== TELA: PAINEL ADMIN ========== -->
+  <div id="screen-admin" style="display:none">
+    <div class="admin-container">
+      <div class="admin-header">
+        <h2>Gestão de Usuários</h2>
+        <button onclick="showAddUserForm()" class="btn-primary">+ Novo Usuário</button>
+      </div>
+
+      <div id="add-user-form" class="card" style="display:none;margin-bottom:24px">
+        <h3 style="margin-bottom:16px;font-size:15px">Novo Usuário</h3>
+        <div id="add-user-error" class="error-msg" style="display:none"></div>
+        <div class="form-row">
+          <div class="form-group col-1"><label>USUÁRIO *</label><input type="text" id="new-username" placeholder="login"></div>
+          <div class="form-group col-1"><label>NOME COMPLETO</label><input type="text" id="new-name" placeholder="Nome para exibição"></div>
+          <div class="form-group col-1"><label>SENHA INICIAL *</label><input type="password" id="new-password" placeholder="mín. 6 caracteres"></div>
+          <div class="form-group col-1">
+            <label>PERFIL</label>
+            <select id="new-role">
+              <option value="user">Usuário</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top:12px;padding-top:12px">
+          <button onclick="cancelAddUser()" class="btn-secondary">Cancelar</button>
+          <button onclick="createUser()" class="btn-primary">Criar Usuário</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Usuário</th><th>Nome</th><th>Perfil</th>
+              <th>Criado em</th><th>Status</th><th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr><td colspan="6" style="text-align:center;color:#999;padding:20px">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MODAL: REDEFINIR SENHA ========== -->
+  <div id="modal-reset" class="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <h3>Redefinir Senha</h3>
+      <p id="modal-reset-label" style="color:#666;margin:8px 0 16px;font-size:13px"></p>
+      <div id="reset-error" class="error-msg" style="display:none"></div>
+      <div class="form-group" style="margin-bottom:20px">
+        <label>NOVA SENHA</label>
+        <input type="password" id="reset-new-password" placeholder="mín. 6 caracteres">
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button onclick="closeResetModal()" class="btn-secondary">Cancelar</button>
+        <button onclick="confirmReset()" class="btn-primary">Salvar</button>
+      </div>
     </div>
   </div>
 
