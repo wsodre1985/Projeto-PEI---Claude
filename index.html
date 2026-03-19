@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EducaInclusiva — PEI Automator</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="logo" onclick="goToLanding()" style="cursor:pointer">
+      <div class="logo-icon">✦</div>
+      <div class="logo-text">
+        <span class="logo-name">EducaInclusiva</span>
+        <span class="logo-sub">PEI Automator</span>
+      </div>
+    </div>
+    <div id="result-actions" class="header-actions" style="display:none">
+      <button onclick="rehash()" class="btn-secondary">↺ Regerar</button>
+      <button onclick="printPEI()" class="btn-secondary">⊞ Imprimir</button>
+      <button onclick="downloadWord()" class="btn-secondary">📄 Word</button>
+      <button onclick="downloadPDF()" class="btn-primary">↓ PDF</button>
+    </div>
+  </header>
+
+  <!-- TELA 1: LANDING -->
+  <div id="screen-landing" class="screen active">
+    <div class="landing-content">
+      <h1>Bem-vindo ao EducaInclusiva</h1>
+      <p>
+        Sua ferramenta inteligente para criar Planos Educacionais
+        Individualizados. Economize tempo e foque no que realmente
+        importa: o desenvolvimento do aluno.
+      </p>
+      <button onclick="goToForm()" class="btn-primary btn-large">
+        Criar Novo PEI &rsaquo;
+      </button>
+    </div>
+    <footer class="app-footer">
+      <p>© 2026 EducaInclusiva — Tecnologia Assistiva para Educação Especial. &nbsp;|&nbsp; Em conformidade com a LGPD.</p>
+    </footer>
+  </div>
+
+  <!-- TELA 2: DADOS DO ALUNO -->
+  <div id="screen-form" class="screen">
+    <div class="form-container">
+
+      <div class="step-header">
+        <div class="step-indicator">
+          <span class="step active">1</span>
+          <span class="step-line"></span>
+          <span class="step">2</span>
+        </div>
+        <h2>Dados do Aluno</h2>
+        <p>Comece preenchendo as informações básicas do estudante.</p>
+      </div>
+
+      <div class="card">
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label>Logo da Escola (Opcional)</label>
+            <input type="file" id="school-logo" accept="image/*" class="file-input">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-2">
+            <label>Nome Completo do Aluno *</label>
+            <input type="text" id="nome" placeholder="Ex: João Silva" required>
+          </div>
+          <div class="form-group col-1">
+            <label>Data de Nascimento</label>
+            <input type="date" id="data_nascimento">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-1">
+            <label>Idade</label>
+            <input type="text" id="idade" placeholder="Ex: 8">
+          </div>
+          <div class="form-group col-1">
+            <label>Série</label>
+            <input type="text" id="serie" placeholder="Ex: 3º Ano">
+          </div>
+          <div class="form-group col-1">
+            <label>Turma</label>
+            <input type="text" id="turma" placeholder="Ex: A">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-1">
+            <label>Turno</label>
+            <select id="turno">
+              <option value="">Selecione</option>
+              <option value="Matutino">Matutino</option>
+              <option value="Vespertino">Vespertino</option>
+              <option value="Integral">Integral</option>
+            </select>
+          </div>
+          <div class="form-group col-1">
+            <label>Bimestre</label>
+            <input type="text" id="bimestre" placeholder="Ex: 1º Bimestre">
+          </div>
+          <div class="form-group col-1">
+            <label>Escola</label>
+            <input type="text" id="escola" placeholder="Nome da instituição">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-1">
+            <label>Nome da Mãe</label>
+            <input type="text" id="nome_mae">
+          </div>
+          <div class="form-group col-1">
+            <label>Nome do Pai</label>
+            <input type="text" id="nome_pai">
+          </div>
+          <div class="form-group col-1">
+            <label>Professora Regente</label>
+            <input type="text" id="prof_regente">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-1">
+            <label>Professora de Apoio</label>
+            <input type="text" id="prof_apoio">
+          </div>
+          <div class="form-group col-1">
+            <label>Coordenação</label>
+            <input type="text" id="coordenacao">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" onclick="goToLanding()" class="btn-secondary">Cancelar</button>
+          <button type="button" onclick="goToUpload()" class="btn-primary">Próximo Passo &rsaquo;</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TELA 3: UPLOAD DO LAUDO -->
+  <div id="screen-upload" class="screen">
+    <div class="form-container">
+
+      <div class="step-header">
+        <div class="step-indicator">
+          <span class="step done">✓</span>
+          <span class="step-line active"></span>
+          <span class="step active">2</span>
+        </div>
+        <h2>Laudo Médico</h2>
+        <p class="accent-text">Faça o upload do laudo para que nossa IA possa analisar as necessidades específicas.</p>
+      </div>
+
+      <div class="card">
+        <div
+          class="upload-area"
+          id="upload-area"
+          onclick="document.getElementById('laudo-file').click()"
+        >
+          <div class="upload-icon">↑</div>
+          <p>Arraste os laudos aqui ou clique para selecionar</p>
+          <small>Formatos aceitos: JPG, PNG, PDF</small>
+          <div id="file-selected" style="display:none" class="file-preview">
+            <span>📄</span>
+            <span id="file-name"></span>
+          </div>
+        </div>
+
+        <input
+          type="file"
+          id="laudo-file"
+          accept="image/jpeg,image/png,application/pdf"
+          style="display:none"
+          onchange="onFileSelected(this)"
+        >
+
+        <div class="form-actions">
+          <button onclick="goToForm()" class="btn-secondary">Voltar</button>
+          <button
+            id="btn-analisar"
+            onclick="analisarPEI()"
+            class="btn-primary btn-ai"
+            disabled
+          >
+            Analisar com IA ✦
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TELA 4: CARREGANDO -->
+  <div id="screen-loading" class="screen">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <h2>Analisando o laudo...</h2>
+      <p>Nossa IA está lendo o documento e criando o PEI personalizado. Isso pode levar alguns segundos.</p>
+    </div>
+  </div>
+
+  <!-- TELA 5: RESULTADO -->
+  <div id="screen-result" class="screen">
+    <div class="result-layout">
+
+      <!-- Painel lateral -->
+      <div class="result-sidebar">
+
+        <div class="sidebar-card">
+          <div class="analysis-header">
+            <span class="check-icon">✓</span>
+            <h3>Análise Concluída</h3>
+          </div>
+          <div class="diagnosis-section">
+            <label>Diagnóstico Identificado</label>
+            <div id="cids-list" class="cids"></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Metas Sugeridas</h3>
+          <div id="metas-list" class="metas-list"></div>
+          <button class="btn-add-meta" onclick="addMeta()">+ Adicionar Meta</button>
+        </div>
+
+        <div class="sidebar-card">
+          <button onclick="downloadPDF()" class="btn-download">↓ Baixar PDF</button>
+          <button onclick="downloadWord()" class="btn-download-alt">📄 Baixar Word</button>
+          <button onclick="printPEI()" class="btn-download-alt">⊞ Imprimir</button>
+          <button onclick="rehash()" class="btn-download-alt">↺ Regerar PEI</button>
+        </div>
+
+      </div>
+
+      <!-- Documento PEI -->
+      <div class="result-main">
+        <div id="pei-document" class="pei-document"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
